@@ -1,3 +1,4 @@
+import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shopping_app/utils/colors.dart';
@@ -37,15 +38,29 @@ class _FoodPageBodyState extends State<FoodPageBody> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 320,
-      child: PageView.builder(
-        controller: pageController,
-        itemCount: 5,
-        itemBuilder: (context, index) {
-          return _buildPageItem(index);
-        }
-      ),
+    return Column(
+      children: [
+        Container(
+          height: 320,
+          child: PageView.builder(
+            controller: pageController,
+            itemCount: 5,
+            itemBuilder: (context, index) {
+              return _buildPageItem(index);
+            }
+          ),
+        ),
+        DotsIndicator(
+          dotsCount: 5,
+          position: _currentPageValue,
+          decorator: DotsDecorator(
+            activeColor: AppColors.mainColor,
+            size: const Size.square(9.0),
+            activeSize: const Size(18.0, 9.0),
+            activeShape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0)),
+          ),
+        )
+      ],
     );
   }
   Widget _buildPageItem(int index) {
@@ -69,7 +84,7 @@ class _FoodPageBodyState extends State<FoodPageBody> {
       var currScale = 0.8;
       matrix = Matrix4.diagonal3Values(1, currScale, 1)..setTranslationRaw(0, _height*(1-_scaleFactor)/2, 0);
     }
-    /// video ===> 1:54
+
     return Transform(
       transform: matrix,
       child: Stack(
@@ -133,6 +148,7 @@ class _FoodPageBodyState extends State<FoodPageBody> {
                     ),
                     SizedBox(height: 20),
                     Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         IconAndTextWidget(
                           icon: Icons.circle_sharp,
